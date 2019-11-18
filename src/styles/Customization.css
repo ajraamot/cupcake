@@ -1,0 +1,60 @@
+.customization__page {
+    background: linen;
+}
+
+.customization__card-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.customization__card {
+    border: 3px solid blueviolet;
+    background:greenyellow;
+    border-radius: 5pt;
+    width: 100%;
+    /* flex-grow: 1; */
+    margin: 20px;
+    padding: 10px;
+}
+
+.customization__card-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.customization__card-price {
+    float: right
+}
+
+.customization_headings {
+    color: blueviolet;
+}
+
+.customization__card-summary {
+    border: 3px solid blueviolet;
+    background:paleturquoise;
+    border-radius: 5pt;
+    width: 50%;
+    /* flex-grow: 1; */
+    margin: 20px;
+    padding: 10px;
+}
+
+.customization__button {
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    background-color: blueviolet;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.customization__button:active {
+    background-color: white;
+    color: blueviolet;
+}
+
+.customization__summary-text--bold {
+    font-weight: bold;
+}
