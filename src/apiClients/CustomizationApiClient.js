@@ -13,4 +13,8 @@ export default class CustomizationApiClient {
         return ApiClient.get('/cupcakes/toppings');
     }
 
+    static placeOrder (order) {
+        console.log('in CustomizationApiClient, about the place order: ', order);
+        return ApiClient.post('/cupcakes/orders', {order});
+    }
 }

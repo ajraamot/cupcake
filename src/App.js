@@ -5,7 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Customization from './components/Customization';
 import OrderManagement from './components/OrderManagement';
-import { fetchBases, fetchFrostings, fetchToppings } from './actions/CustomizationActions';
+import { fetchBases, fetchFrostings, fetchToppings, placeOrder } from './actions/CustomizationActions';
 
 import './App.css';
 import 'react-tabs/style/react-tabs.css';
@@ -20,9 +20,9 @@ class App extends React.Component {
         frosting: {"key":"vanillaFrosting","name":"Vanilla Frosting","price":15,"ingredients":["vanilla frosting"]},
         toppings: []
       },
-      deliveryTime: moment().add(1, 'days').toDate(),
       order: {
-        cupcakes: []
+        cupcakes: [],
+        delivery_date: moment().add(1, 'days').toDate()
       }
     };
   }
@@ -87,14 +87,20 @@ class App extends React.Component {
   }
 
 
-  handleDeliveryTimeSelect = (date) => {
-    this.setState({
-      deliveryTime: date
-    });
+  handleDeliveryDateSelect = (date) => {
+    console.log('in App.handleDeliveryDateSelect, date = ', date);
+    this.setState(prevState => ({
+      ...prevState,
+      order: {
+        ...prevState.order,
+        delivery_date: date
+      }
+    }));
   }
 
   placeOrder = () => {
-    // this.props.placeOrder();
+    console.log('in App.js.placeOrder, order = ', this.state.order);
+    this.props.placeOrder(this.state.order);
   }
 
   render() {
@@ -116,8 +122,8 @@ class App extends React.Component {
         selectFrosting={this.selectFrosting}
         selectToppings={this.selectToppings}
         addCupcake={this.addCupcake}
-        handleDeliveryTimeSelect={this.handleDeliveryTimeSelect}
-        deliveryTime={this.state.deliveryTime}
+        handleDeliveryDateSelect={this.handleDeliveryDateSelect}
+        deliveryDate={this.state.order.delivery_date}
         placeOrder={this.placeOrder}
         />
       </TabPanel>
@@ -142,7 +148,7 @@ export function mapDispatchToProps (dispatch) {
       fetchBases: () => dispatch(fetchBases()),
       fetchFrostings: () => dispatch(fetchFrostings()),
       fetchToppings: () => dispatch(fetchToppings()),
-      // placeOrder: () => dispatch(placeOrder())
+      placeOrder: (order) => dispatch(placeOrder(order))
     };
 }
 

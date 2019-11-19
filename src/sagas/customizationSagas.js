@@ -1,10 +1,15 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { fetchBasesSucceeded, 
+import {
+    actionTypes,
+    fetchBasesSucceeded, 
     fetchBasesFailed,
     fetchFrostingsSucceeded, 
     fetchFrostingsFailed,
     fetchToppingsSucceeded, 
-    fetchToppingsFailed } from '../actions/CustomizationActions';
+    fetchToppingsFailed,
+    placeOrderSucceeded,
+    placeOrderFailed
+ } from '../actions/CustomizationActions';
 import CustomizationApiClient from '../apiClients/CustomizationApiClient';
 
 export function * watchFetchBases () {
@@ -43,8 +48,24 @@ export function * watchFetchToppings () {
     }
 }
 
+export function * watchPlaceOrder () {
+    yield takeEvery(actionTypes.PLACE_ORDER_REQUESTED, placeOrder);
+}
+
+export function * placeOrder (payload) {
+    console.log('in customizationSagas.placeOrder, payload.order = ', payload.order);
+    try {
+        yield call(CustomizationApiClient.placeOrder, payload.order);
+
+        yield put(placeOrderSucceeded());
+    } catch (error) {
+        yield put(placeOrderFailed(error.data));
+    }
+}
+
 export const customizationSagas = [
     watchFetchBases,
     watchFetchFrostings,
     watchFetchToppings,
+    watchPlaceOrder
 ];

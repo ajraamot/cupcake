@@ -62,7 +62,7 @@ class Customization extends React.Component {
             <div className='customization__card-title'>Cupcake Summary</div>
             <div>Base: {this.props.cupcake.base.name} {this.formatPrice(this.props.cupcake.base.price)}</div>
             <div>Frosting: {this.props.cupcake.frosting.name} {this.formatPrice(this.props.cupcake.frosting.price)}</div>
-            <div>Toppings: {this.props.cupcake.toppings.map(topping => <div>{topping.name}: {this.formatPrice(topping.price)}</div>)}</div>
+            <div>Toppings: {this.props.cupcake.toppings.map(topping => <div key={topping.name}>{topping.name}: {this.formatPrice(topping.price)}</div>)}</div>
             <div>Cupcake Total: {this.formatPrice(subTotal)}</div>
             <button className='customization__button' onClick={this.props.addCupcake}>Add Cupcake to Order</button>
 
@@ -80,13 +80,12 @@ class Customization extends React.Component {
                     <div className='customization__summary-text--bold'>Cupcake #{index + 1} {this.formatPrice(this.getCupcakePrice(cupcake))}</div>
                     <div>Base: {cupcake.base.name}</div>
                     <div>Frosting: {cupcake.frosting.name}</div>
-                    <div>Toppings: {cupcake.toppings.map(topping => <span>{topping.name}, </span>)}</div>
+                    <div>Toppings: {cupcake.toppings.map(topping => <span key={topping.name}>{topping.name}, </span>)}</div>
             </React.Fragment>})}
           </React.Fragment>;
     }
 
     renderOrderSummary = () => {
-        const toppingTotal = this.props.cupcake.toppings.reduce((total, current) => { return total += current.price }, 0);
         const subTotal = this.props.cupcakes.reduce((total, cupcake) => { return total += this.getCupcakePrice(cupcake)}, 0);
         const delivery = 150;
         const tax = 0.0875 * (subTotal + delivery) 
@@ -100,12 +99,12 @@ class Customization extends React.Component {
 
             <div className='customization__card-title'>Please schedule a delivery time:</div>
             <DatePicker
-                selected={this.props.deliveryTime}
+                selected={this.props.deliveryDate}
                 minDate={moment().add(1, 'days').toDate()}
                 dateFormat={'MMM d, hh:mma'}
                 showTimeSelect
-                onSelect={this.props.handleDeliveryTimeSelect}
-                onChange={this.props.handleDeliveryTimeSelect}
+                onSelect={this.props.handleDeliveryDateSelect}
+                onChange={this.props.handleDeliveryDateSelect}
             />
             <div/>
             <button className='customization__button' onClick={this.props.placeOrder}>Place Order</button>

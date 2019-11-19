@@ -22,6 +22,14 @@ export default function customizationReducer (state = defaultState, action) {
     case customizationActionTypes.FETCH_TOPPINGS_SUCCEEDED:
         newState.toppings = action.data;
         break;
+    case customizationActionTypes.PLACE_ORDER_SUCCEEDED:
+        console.log('in customizationReducer.js, PLACE_ORDER_SUCCEEDED');
+        break;
+    case customizationActionTypes.PLACE_ORDER_FAILED:
+        console.log('in customizationReducer.js, PLACE_ORDER_FAILED with action = ', action);
+        break;
+    default: 
+        console.warn('in customizationReducer, no case found for action: ', action.type);
     }
     return newState;
 }
