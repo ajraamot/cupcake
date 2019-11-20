@@ -2,8 +2,14 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import '../styles/Customization.css';
+import { orderStatus } from '../constants/constants';
 
 class Customization extends React.Component {    
+    componentDidMount = () => {
+        console.log('in Customization.componentDidMount, about to fetchCupcakeComponents');
+        this.props.fetchCupcakeComponents();
+      }
+    
     renderBase = () => {
         const baseTypes = this.props.bases; 
         return <div className='customization__card'>
@@ -85,10 +91,19 @@ class Customization extends React.Component {
           </React.Fragment>;
     }
 
+    shouldDisableOrderButton () {
+        return this.props.cupcakes.length < 1 || this.props.orderStatus === orderStatus.PENDING;
+    }
+
     renderOrderSummary = () => {
         const subTotal = this.props.cupcakes.reduce((total, cupcake) => { return total += this.getCupcakePrice(cupcake)}, 0);
         const delivery = 150;
-        const tax = 0.0875 * (subTotal + delivery) 
+        const tax = 0.0875 * (subTotal + delivery)
+        if (this.props.cupcakes.length < 1) {
+            return <div className='customization__card-summary'>
+                <div className='customization__card-title'>You have not added any Cupcakes to the Order</div>
+            </div>
+        } 
         return <div className='customization__card-summary'>
             <div className='customization__card-title'>Order Summary</div>
             {this.renderCupcakesList()}
@@ -107,14 +122,14 @@ class Customization extends React.Component {
                 onChange={this.props.handleDeliveryDateSelect}
             />
             <div/>
-            <button className='customization__button' onClick={this.props.placeOrder}>Place Order</button>
-
+            <button className='customization__button' onClick={this.props.placeOrder} disabled={this.shouldDisableOrderButton()} >Place Order</button>
+            <div>{this.props.orderStatus === orderStatus.SUCCEEDED ? orderStatus.SUCCEEDED : null}</div>
         </div>
     }
 
     formatPrice = (price) => {
         return '$' + ((price/100).toFixed(2));
-      }
+    }
     
 
     render() {

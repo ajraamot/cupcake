@@ -53,7 +53,6 @@ export function * watchPlaceOrder () {
 }
 
 export function * placeOrder (payload) {
-    console.log('in customizationSagas.placeOrder, payload.order = ', payload.order);
     try {
         yield call(CustomizationApiClient.placeOrder, payload.order);
 

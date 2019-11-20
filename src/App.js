@@ -23,14 +23,16 @@ class App extends React.Component {
       order: {
         cupcakes: [],
         delivery_date: moment().add(1, 'days').toDate()
-      }
+      },
+      orderStatus: null
     };
   }
 
-  componentDidMount = () => {
+  fetchCupcakeComponents = () => {
+    console.log('in App.fetchCupcakeComponents');
     this.props.fetchBases();
     this.props.fetchFrostings();
-    this.props.fetchToppings();    
+    this.props.fetchToppings();
   }
 
   selectBase = (event) => {
@@ -88,7 +90,6 @@ class App extends React.Component {
 
 
   handleDeliveryDateSelect = (date) => {
-    console.log('in App.handleDeliveryDateSelect, date = ', date);
     this.setState(prevState => ({
       ...prevState,
       order: {
@@ -99,7 +100,6 @@ class App extends React.Component {
   }
 
   placeOrder = () => {
-    console.log('in App.js.placeOrder, order = ', this.state.order);
     this.props.placeOrder(this.state.order);
   }
 
@@ -113,6 +113,7 @@ class App extends React.Component {
       </TabList>
       <TabPanel className='tab-panel__customization'>
         <Customization 
+        fetchCupcakeComponents={this.fetchCupcakeComponents}
         bases={this.props.bases}
         frostings={this.props.frostings}
         toppings={this.props.toppings}
@@ -125,6 +126,7 @@ class App extends React.Component {
         handleDeliveryDateSelect={this.handleDeliveryDateSelect}
         deliveryDate={this.state.order.delivery_date}
         placeOrder={this.placeOrder}
+        orderStatus={this.props.orderStatus}
         />
       </TabPanel>
       <TabPanel>
@@ -139,7 +141,8 @@ export function mapStateToProps (state) {
   return {
     bases: state.customization.bases,
     frostings: state.customization.frostings,
-    toppings: state.customization.toppings
+    toppings: state.customization.toppings,
+    orderStatus: state.customization.orderStatus
   }
 }
 
