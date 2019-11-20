@@ -1,13 +1,37 @@
 import React from 'react';
+import '../styles/OrderManagement.css';
 
 class OrderManagement extends React.Component {
     componentDidMount = () => {
-        this.props.fetchOrders()
+        this.props.fetchOrders();
     }
 
-    // componentDidMount(this.props.getOrders);
+    getOrders = () => {
+        this.props.fetchOrders();
+    }
+
+    renderCupcakeDetails = (cupcake, index) => {
+        return <tr key='index'>
+                <td>{cupcake.base.name}</td>
+                <td>{cupcake.frosting.name}</td>
+                <td>{cupcake.toppings.reduce((all, current) => {return all += current.name + ', '}, '')}</td>
+        </tr>
+
+    }
+
     render() {
-        return <div></div>
+        return <div>
+            <h1>Order Management</h1>
+            <table border='1' className='order-management__table'>
+                <th><td>Base</td><td>Frosting</td><td>Toppings</td></th>
+                {this.props.orders ? this.props.orders.map((order, index) => <tr key={index}>
+                <td>{order.delivery_date}</td>
+                {order.cupcakes.map((cupcake) => this.renderCupcakeDetails(cupcake))}
+                </tr>) : <span>No orders</span>}
+
+            </table>
+            <button className='customization__button' onClick={this.getOrders}>Fetch Orders</button>
+        </div>
     }
 }
 

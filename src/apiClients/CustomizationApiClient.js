@@ -14,6 +14,6 @@ export default class CustomizationApiClient {
     }
 
     static placeOrder (order) {
-        return ApiClient.post('/cupcakes/orders', order);
+        return ApiClient.post('/cupcakes/orders', {order});
     }
 }

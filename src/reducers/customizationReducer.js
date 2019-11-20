@@ -38,7 +38,7 @@ export default function customizationReducer (state = defaultState, action) {
         // TODO: Maybe set a loading state to true
         break;
     default: 
-        console.warn('in customizationReducer, no case found for action: ', action.type);
+        break;
     }
     return newState;
 }

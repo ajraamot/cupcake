@@ -6,7 +6,6 @@ import { orderStatus } from '../constants/constants';
 
 class Customization extends React.Component {    
     componentDidMount = () => {
-        console.log('in Customization.componentDidMount, about to fetchCupcakeComponents');
         this.props.fetchCupcakeComponents();
       }
     

@@ -6,6 +6,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Customization from './components/Customization';
 import OrderManagement from './components/OrderManagement';
 import { fetchBases, fetchFrostings, fetchToppings, placeOrder } from './actions/CustomizationActions';
+import { fetchOrders } from './actions/OrderManagementActions';
 
 import './App.css';
 import 'react-tabs/style/react-tabs.css';
@@ -29,7 +30,6 @@ class App extends React.Component {
   }
 
   fetchCupcakeComponents = () => {
-    console.log('in App.fetchCupcakeComponents');
     this.props.fetchBases();
     this.props.fetchFrostings();
     this.props.fetchToppings();
@@ -103,6 +103,10 @@ class App extends React.Component {
     this.props.placeOrder(this.state.order);
   }
 
+  fetchOrders = () => {
+    this.props.fetchOrders();
+  }
+
   render() {
     return (
       <Tabs>
@@ -130,7 +134,10 @@ class App extends React.Component {
         />
       </TabPanel>
       <TabPanel>
-        <OrderManagement/>
+        <OrderManagement
+        fetchOrders={this.fetchOrders}
+        orders={this.props.orders}
+        />
       </TabPanel>
       </Tabs>
     );
@@ -142,7 +149,8 @@ export function mapStateToProps (state) {
     bases: state.customization.bases,
     frostings: state.customization.frostings,
     toppings: state.customization.toppings,
-    orderStatus: state.customization.orderStatus
+    orderStatus: state.customization.orderStatus,
+    orders: state.orderManagement.orders
   }
 }
 
@@ -151,7 +159,8 @@ export function mapDispatchToProps (dispatch) {
       fetchBases: () => dispatch(fetchBases()),
       fetchFrostings: () => dispatch(fetchFrostings()),
       fetchToppings: () => dispatch(fetchToppings()),
-      placeOrder: (order) => dispatch(placeOrder(order))
+      placeOrder: (order) => dispatch(placeOrder(order)),
+      fetchOrders: () => dispatch(fetchOrders())
     };
 }
 
