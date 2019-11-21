@@ -40,6 +40,17 @@ class OrderManagement extends React.Component {
         </table>
     }
 
+    filterAllCakesInOrder = (order, component) => {
+        let result = false;
+        let filterText = 'baseFilterText';
+        if (component === 'frosting') {
+            filterText = 'frostingFilterText';
+        }
+
+        order.cupcakes.forEach(cupcake => cupcake[component].name.toLowerCase().includes(this.props[filterText].toLowerCase()) ? result = true : result );
+        return result;
+    }
+
     render() {
         return <div>
             <h1>Order Management</h1>
@@ -48,15 +59,17 @@ class OrderManagement extends React.Component {
                 <thead>
                     <tr>
                         <th onClick={this.props.toggleSortDirection}>Delivery Date<br/>(click to toggle) {this.props.ascendingSort ? '⇧' : '⇩'}</th>
-                        <th>Base<br/><input placeholder='filter by base' onChange={this.props.filterByBase}/></th>
-                        <th>Frosting</th>
+                        <th>Base<br/><input placeholder='filter by base' onChange={this.props.setBaseFilterText}/></th>
+                        <th>Frosting<br/><input placeholder='filter by frosting' onChange={this.props.setFrostingFilterText}/></th>
                         <th>Toppings</th>
                     </tr>
                 </thead>
                 <tbody>
                 {this.props.orders ? this.props.orders
                     .sort((a, b) => this.applySort)
-                    .filter(obj => obj.cupcakes[0].base.name.includes(this.props.filterText) )
+                    .filter(order => this.filterAllCakesInOrder(order, 'base'))
+                    .filter(order => this.filterAllCakesInOrder(order, 'frosting'))
+                    // .filter(obj => obj.cupcakes[0].base.name.toLowerCase().includes(this.props.baseFilterText.toLowerCase()) )
                     .map((order, index) => <tr key={order.id}>
                 <td rowpan={order.cupcakes.length}>{order.delivery_date}</td>
                 <td>

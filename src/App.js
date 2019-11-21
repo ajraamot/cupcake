@@ -27,7 +27,9 @@ class App extends React.Component {
       },
       orderStatus: null,
       ascendingSort: true,
-      filterText: ''
+      baseFilterText: '',
+      frostingFilterText: '',
+      toppingsFilterText: ''
     };
   }
 
@@ -109,9 +111,21 @@ class App extends React.Component {
     this.props.fetchOrders();
   }
 
-  filterByBase = (event) => {
+  setBaseFilterText = (event) => {
     this.setState({
-        filterText: event.target.value
+        baseFilterText: event.target.value
+    });
+  }
+
+  setFrostingFilterText = (event) => {
+    this.setState({
+        frostingFilterText: event.target.value
+    });
+  }
+
+  setToppingsFilterText = (event) => {
+    this.setState({
+        toppingsFilterText: event.target.value
     });
   }
     
@@ -163,11 +177,15 @@ class App extends React.Component {
         fetchOrders={this.fetchOrders}
         // orders={this.props.orders}
         orders={this.props.orders.sort((a, b) => this.applySort(a, b))}
-        filterByBase={this.filterByBase}
         applySort={this.applySort}
         toggleSortDirection={this.toggleSortDirection}
         ascendingSort={this.state.ascendingSort}
-        filterText={this.state.filterText}
+        setBaseFilterText={this.setBaseFilterText}
+        baseFilterText={this.state.baseFilterText}
+        setFrostingFilterText={this.setFrostingFilterText}
+        frostingFilterText={this.state.frostingFilterText}
+        setToppingsFilterText={this.setToppingsFilterText}
+        toppingsFilterText={this.state.toppingsFilterText}
         />
       </TabPanel>
       </Tabs>
