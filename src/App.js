@@ -25,7 +25,9 @@ class App extends React.Component {
         cupcakes: [],
         delivery_date: moment().add(1, 'days').toDate()
       },
-      orderStatus: null
+      orderStatus: null,
+      ascendingSort: true,
+      filterText: ''
     };
   }
 
@@ -107,6 +109,29 @@ class App extends React.Component {
     this.props.fetchOrders();
   }
 
+  filterByBase = (event) => {
+    this.setState({
+        filterText: event.target.value
+    });
+  }
+    
+  applySort = (a, b) => {
+    let returnValue
+    if (this.state.ascendingSort) {
+          returnValue = (a.delivery_date > b.delivery_date) ? 1 : -1
+    } else {
+          returnValue = (a.delivery_date < b.delivery_date) ? 1 : -1
+    }
+    return returnValue;
+  }
+
+  toggleSortDirection = () => {
+    this.setState({
+        ascendingSort: !this.state.ascendingSort
+    })
+  }
+
+
   render() {
     return (
       <Tabs>
@@ -136,7 +161,13 @@ class App extends React.Component {
       <TabPanel>
         <OrderManagement
         fetchOrders={this.fetchOrders}
-        orders={this.props.orders}
+        // orders={this.props.orders}
+        orders={this.props.orders.sort((a, b) => this.applySort(a, b))}
+        filterByBase={this.filterByBase}
+        applySort={this.applySort}
+        toggleSortDirection={this.toggleSortDirection}
+        ascendingSort={this.state.ascendingSort}
+        filterText={this.state.filterText}
         />
       </TabPanel>
       </Tabs>
